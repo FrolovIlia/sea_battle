@@ -2,6 +2,7 @@ class Canva:
     def draw_field(self):
         pass
 
+
 class Ships:
     class Carrier:
         pass
@@ -19,11 +20,9 @@ class Ships:
         pass
 
 
-class Players_Stat:
+class PlayersStat:
     pass
+
 
 class HitShips:
     pass
-
-
-
