@@ -46,4 +46,4 @@ shot = input('Введите координаты в формате "xy": ')
 
 check_shoot(shot)
 
-show_field(add_ships(field_condition))
+# show_field(add_ships(field_condition))

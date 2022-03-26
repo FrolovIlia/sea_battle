@@ -1,25 +1,40 @@
-
-
-class Canva:
-    def draw_field(self):
-        pass
-
-
 class Ships:
-    class Carrier:
-        pass
+    def __init__(self, positions=None, size=0, count=0):
+        if positions is None:
+            positions = []
+        self.size = size
+        self.count = count
+        self.positions = positions
 
-    class BattleShip:
-        pass
 
-    class Cruiser:
-        pass
+class Carrier:
+    Ships.size = 0
+    Ships.count = 0
+    Ships.positions = []
 
-    class Submarine:
-        pass
 
-    class Destroyer:
-        pass
+class BattleShip:
+    Ships.size = 0
+    Ships.count = 0
+    Ships.positions = []
+
+
+class Cruiser:
+    Ships.size = 0
+    Ships.count = 0
+    Ships.positions = []
+
+
+class Submarine:
+    Ships.size = 0
+    Ships.count = 0
+    Ships.positions = []
+
+
+class Destroyer:
+    Ships.size = 0
+    Ships.count = 0
+    Ships.positions = []
 
 
 class PlayersStat:
