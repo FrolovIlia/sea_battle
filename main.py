@@ -32,17 +32,17 @@ def check_shoot(shoot):
         print('Данные верны')
         return True
     else:
-        print('Пожалуйста, введите корректные данные')
-        return False
+        trying = input('Пожалуйста, введите корректные координаты в формате XY: ')
+        check_shoot(trying)
 
 
 show_field(start_field())
 
 print('Добро пожаловать в игру "Морской Бой!"')
-print('Пришло время первого выстрела...')
+print('Выберите координаты от 0 до 9 по X и Y')
 print()
 
-shot = input('Введите координаты в формате "xy": ')
+shot = input('Введите координаты в формате XY: ')
 
 check_shoot(shot)
 
