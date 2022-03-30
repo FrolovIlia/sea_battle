@@ -1,4 +1,4 @@
-from Reformat_JSON import templates
+from Ships import ships_dict
 
 
 def start_field():
@@ -19,7 +19,7 @@ def show_field(a: list):
 
 def add_ships(base_field: list):
     all_pos = []
-    for i in templates['layout']:
+    for i in ships_dict['layout']:
         all_pos.extend(i['positions'])
 
     for x, y in all_pos:
@@ -30,7 +30,7 @@ def add_ships(base_field: list):
 def check_shoot(shoot):
     if len(shoot) == 2 and shoot.isnumeric():
         print('Данные верны')
-        return True
+        return shot
     else:
         trying = input('Пожалуйста, введите корректные координаты в формате XY: ')
         check_shoot(trying)
@@ -46,4 +46,3 @@ shot = input('Введите координаты в формате XY: ')
 
 check_shoot(shot)
 
-# show_field(add_ships(field_condition))

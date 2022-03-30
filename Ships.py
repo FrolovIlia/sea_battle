@@ -1,45 +1,22 @@
-class Ships:
-    def __init__(self, positions=None, size=0, count=0):
-        if positions is None:
-            positions = []
-        self.size = size
-        self.count = count
-        self.positions = positions
+import json
+from main import shot
+
+with open('data_file.json') as f:
+    ships_dict = json.load(f)
 
 
-class Carrier:
-    Ships.size = 0
-    Ships.count = 0
-    Ships.positions = []
+for i in ships_dict["layout"]:
+    if shot in i['positions']:
+        print(i['positions'])
+        print("Попадание")
+        print(f"Удаляем из списка {shot}")
+        i['positions'].remove(shot)
+        if len(i['positions']) == 0:
+            print("Корабль полностью подбит")
 
+    else:
+        print(i['positions'])
+        print("Нет попадания")
+    print()
 
-class BattleShip:
-    Ships.size = 0
-    Ships.count = 0
-    Ships.positions = []
-
-
-class Cruiser:
-    Ships.size = 0
-    Ships.count = 0
-    Ships.positions = []
-
-
-class Submarine:
-    Ships.size = 0
-    Ships.count = 0
-    Ships.positions = []
-
-
-class Destroyer:
-    Ships.size = 0
-    Ships.count = 0
-    Ships.positions = []
-
-
-class PlayersStat:
-    pass
-
-
-class HitShips:
-    pass
+# print(ships_dict["layout"])
