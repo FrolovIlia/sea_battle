@@ -1,4 +1,5 @@
-from Ships import ships_dict
+import Ships
+from Ships import *
 
 
 def start_field():
@@ -19,7 +20,7 @@ def show_field(a: list):
 
 def add_ships(base_field: list):
     all_pos = []
-    for i in ships_dict['layout']:
+    for i in Ships.ships_dict['layout']:
         all_pos.extend(i['positions'])
 
     for x, y in all_pos:
@@ -42,7 +43,10 @@ print('Добро пожаловать в игру "Морской Бой!"')
 print('Выберите координаты от 0 до 9 по X и Y')
 print()
 
-shot = input('Введите координаты в формате XY: ')
+while stop_game() is False:
+    shot = input('Введите координаты в формате XY: ')
+    check_shoot(shot)
 
-check_shoot(shot)
-
+    Ships.shooting(shot)
+else:
+    print("Game Over")
