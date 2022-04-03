@@ -26,10 +26,10 @@ def add_ships(base_field: list):
     return new_field
 
 
-def check_shoot(shoot):
+def check_shoot(shoot: str) -> list[int]:
     if len(shoot) == 2 and shoot.isnumeric():
         print('Данные верны')
-        return shoot
+        return [int(shoot[0]), int(shoot[1])]
     else:
         trying = input('Пожалуйста, введите корректные координаты в формате XY: ')
         return check_shoot(trying)
@@ -37,7 +37,7 @@ def check_shoot(shoot):
 
 def note_shoot(field: list[list], shoot: list):
     x, y = shoot
-    field[int(x)][int(y)] = '*'
+    field[x][y] = '*'
     return field
 
 
@@ -50,7 +50,6 @@ print()
 
 field_with_ships = add_ships(field_condition)
 show_field(field_with_ships)
-show_field(field_condition)
 
 while stop_game() is False:
     shot = input('Введите координаты в формате XY: ')

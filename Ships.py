@@ -13,9 +13,8 @@ def stop_game():
         return False
 
 
-def shooting(shoot):
+def shooting(hit):
     global dead_ships
-    hit = [int(shoot[0]), int(shoot[1])]
     for ship in ships_dict["layout"]:
         if hit in ship['positions']:
             print(ship['positions'])
