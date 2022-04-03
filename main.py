@@ -37,6 +37,12 @@ def check_shoot(shoot: str) -> list[int]:
 
 def note_shoot(field: list[list], shoot: list):
     x, y = shoot
+    # TODO
+    #  Создать условие. Если выстрел попадает в корабль, отображаем на пользовательском поле "X"
+    #  Если не попадаем, отображаем "*".
+    #  Не забыть добавить атрибут в функцию с "полем с кораблями".
+
+
     field[x][y] = '*'
     return field
 
