@@ -1,3 +1,9 @@
+[x] Сохранять состояния кораблей в словаре. 
+[x] Проработать передачу "выстрела" в модуль Ships и изменение состояния словаря ships_dict. 
+[ ] Отображать поле после выстрела(без отображения кораблей). 
+[ ] 
+
+
 Design and implement a (partial) Battleship game as a web app.
 
 In Battleship, the computer has positioned five ships of various sizes on a 10x10 board.

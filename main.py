@@ -8,24 +8,22 @@ def start_field():
     return clean_field
 
 
-field_condition = start_field()
-
-
-def show_field(a: list):
-    for i in range(len(a)):
-        for j in range(len(a[i])):
-            print(a[i][j], end=' ')
+def show_field(field: list):
+    for i in range(len(field)):
+        for j in range(len(field[i])):
+            print(field[i][j], end=' ')
         print()
 
 
 def add_ships(base_field: list):
     all_pos = []
-    for i in Ships.ships_dict['layout']:
-        all_pos.extend(i['positions'])
+    for ship in Ships.ships_dict['layout']:
+        all_pos.extend(ship['positions'])
 
+    new_field = [line.copy() for line in base_field]
     for x, y in all_pos:
-        base_field[x][y] = 's'
-    return base_field
+        new_field[x][y] = 's'
+    return new_field
 
 
 def check_shoot(shoot):
@@ -37,16 +35,32 @@ def check_shoot(shoot):
         return check_shoot(trying)
 
 
-show_field(start_field())
+def note_shoot(field: list[list], shoot: list):
+    x, y = shoot
+    field[int(x)][int(y)] = '*'
+    return field
+
+
+field_condition = start_field()
+show_field(field_condition)
 
 print('Добро пожаловать в игру "Морской Бой!"')
 print('Выберите координаты от 0 до 9 по X и Y')
 print()
+
+field_with_ships = add_ships(field_condition)
+show_field(field_with_ships)
+show_field(field_condition)
 
 while stop_game() is False:
     shot = input('Введите координаты в формате XY: ')
     shot = check_shoot(shot)
 
     Ships.shooting(shot)
+    # перерисовка поля по новым данным словаря позиций кораблей.
+    field_condition = note_shoot(field_condition, shot)
+    show_field(field_condition)
+
+
 else:
     print("Game Over")
