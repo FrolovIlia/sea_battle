@@ -31,10 +31,10 @@ def add_ships(base_field: list):
 def check_shoot(shoot):
     if len(shoot) == 2 and shoot.isnumeric():
         print('Данные верны')
-        return shot
+        return shoot
     else:
         trying = input('Пожалуйста, введите корректные координаты в формате XY: ')
-        check_shoot(trying)
+        return check_shoot(trying)
 
 
 show_field(start_field())
@@ -45,7 +45,7 @@ print()
 
 while stop_game() is False:
     shot = input('Введите координаты в формате XY: ')
-    check_shoot(shot)
+    shot = check_shoot(shot)
 
     Ships.shooting(shot)
 else:

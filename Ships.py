@@ -1,37 +1,34 @@
 import json
 
+dead_ships = 0
+
 with open('data_file.json') as f:
     ships_dict = json.load(f)
 
-
-def stop_game(counter=None):
-    if counter == len(ships_dict["layout"]):
+def stop_game():
+    if dead_ships == len(ships_dict["layout"]):
         print('Игра закончена! Поздравляю!')
         return True
     else:
         return False
 
 
-shot = [0, 0]
-
-
 def shooting(shoot):
-    counter = 0
+    global dead_ships
     hit = [int(shoot[0]), int(shoot[1])]
-    for i in ships_dict["layout"]:
-        if hit in i['positions']:
-            print(i['positions'])
+    for ship in ships_dict["layout"]:
+        if hit in ship['positions']:
+            print(ship['positions'])
             print("Попадание")
             print(f"Удаляем из списка {hit}")
-            i['positions'].remove(hit)
-            if len(i['positions']) == 0:
+            ship['positions'].remove(hit)
+            if len(ship['positions']) == 0:
                 print("Корабль полностью подбит")
-                counter += 1
-                return counter
+                dead_ships += 1
+
 
         else:
-            print(i['positions'])
+            print(ship['positions'])
             print("Нет попадания")
         print()
 
-# print(ships_dict["layout"])
