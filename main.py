@@ -35,16 +35,14 @@ def check_shoot(shoot: str) -> list[int]:
         return check_shoot(trying)
 
 
-def note_shoot(field: list[list], shoot: list):
+def note_shoot(user_field: list[list], test_field: list[list], shoot: list):
     x, y = shoot
-    # TODO
-    #  Создать условие. Если выстрел попадает в корабль, отображаем на пользовательском поле "X"
-    #  Если не попадаем, отображаем "*".
-    #  Не забыть добавить атрибут в функцию с "полем с кораблями".
+    if test_field[x][y] == 's':
+        user_field[x][y] = '*'
+    else:
+        user_field[x][y] = 'x'
 
-
-    field[x][y] = '*'
-    return field
+    return user_field
 
 
 field_condition = start_field()
@@ -63,7 +61,7 @@ while stop_game() is False:
 
     Ships.shooting(shot)
     # перерисовка поля по новым данным словаря позиций кораблей.
-    field_condition = note_shoot(field_condition, shot)
+    field_condition = note_shoot(field_condition, field_with_ships, shot)
     show_field(field_condition)
 
 

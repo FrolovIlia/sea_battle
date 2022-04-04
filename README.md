@@ -3,6 +3,10 @@
 [ ] Отображать поле после выстрела(без отображения кораблей). 
 [ ] 
 
+[ ] Познакомиться с модулем PyGame
+[ ] Познакомиться с фреймворком Flask
+[ ] Познакомиться с JS-библиотекой React
+
 
 Design and implement a (partial) Battleship game as a web app.
 
