@@ -1,5 +1,5 @@
-import Ships
-from Ships import *
+import GameLogic
+from GameLogic import *
 
 
 def start_field():
@@ -17,7 +17,7 @@ def show_field(field: list):
 
 def add_ships(base_field: list):
     all_pos = []
-    for ship in Ships.ships_dict['layout']:
+    for ship in GameLogic.ships_dict['layout']:
         all_pos.extend(ship['positions'])
 
     new_field = [line.copy() for line in base_field]
@@ -59,7 +59,7 @@ while stop_game() is False:
     shot = input('Введите координаты в формате XY: ')
     shot = check_shoot(shot)
 
-    Ships.shooting(shot)
+    GameLogic.shooting(shot)
     # перерисовка поля по новым данным словаря позиций кораблей.
     field_condition = note_shoot(field_condition, field_with_ships, shot)
     show_field(field_condition)
