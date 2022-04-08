@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+
 display_size_x = 840
 display_size_y = 600
 
@@ -11,6 +12,12 @@ game_display.fill('white')
 
 aircraft_shape = pygame.transform.scale(pygame.image.load('pictures/Aircraft Shape.png'), (90, 30))
 game_display.blit(aircraft_shape, (50, 100))
+
+empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Hit small.png'), (20, 20))
+game_display.blit(empty_cell, (140, 110))
+
+padded_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'), (20, 20))
+game_display.blit(padded_cell, (160, 110))
 
 
 def event_handler():
