@@ -44,26 +44,26 @@ def note_shoot(user_field: list[list], test_field: list[list], shoot: list):
 
     return user_field
 
-
-field_condition = start_field()
-show_field(field_condition)
-
-print('Добро пожаловать в игру "Морской Бой!"')
-print('Выберите координаты от 0 до 9 по X и Y')
-print()
-
-field_with_ships = add_ships(field_condition)
-show_field(field_with_ships)
-
-while stop_game() is False:
-    shot = input('Введите координаты в формате XY: ')
-    shot = check_shoot(shot)
-
-    GameLogic.shooting(shot)
-    # перерисовка поля по новым данным словаря позиций кораблей.
-    field_condition = note_shoot(field_condition, field_with_ships, shot)
+if __name__ == '__main__':
+    field_condition = start_field()
     show_field(field_condition)
 
+    print('Добро пожаловать в игру "Морской Бой!"')
+    print('Выберите координаты от 0 до 9 по X и Y')
+    print()
 
-else:
-    print("Game Over")
+    field_with_ships = add_ships(field_condition)
+    show_field(field_with_ships)
+
+    while stop_game() is False:
+        shot = input('Введите координаты в формате XY: ')
+        shot = check_shoot(shot)
+
+        GameLogic.shooting(shot)
+        # перерисовка поля по новым данным словаря позиций кораблей.
+        field_condition = note_shoot(field_condition, field_with_ships, shot)
+        show_field(field_condition)
+
+
+    else:
+        print("Game Over")
