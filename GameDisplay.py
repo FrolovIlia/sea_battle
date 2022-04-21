@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+
 from GameLogic import dead_ships
 
 display_size_x = 840
@@ -23,7 +24,7 @@ hit_counter_1 = pygame.font.Font(None, 36)
 
 sign_counter = hit_counter_1.render(f'{dead_ships}', True, (180, 0, 0))
 game_display.blit(sign_counter, (115, 80)
-)
+                  )
 player_name = hit_counter_1.render('Player 1', True, (180, 0, 0))
 game_display.blit(player_name, (75, 140))
 
@@ -53,22 +54,34 @@ game_display.blit(submarine_shape, (display_size_x / 14, 350))
 destroyer_shape = pygame.transform.scale(pygame.image.load('pictures/Destroyer_Shape.png'), (120, 40))
 game_display.blit(destroyer_shape, (display_size_x / 14, 400))
 
-
 # Параметры поля
 game_square = pygame.draw.rect(game_display, (215, 215, 215),
-                 (display_size_x / 2.3, display_size_y / 10, display_size_x / 2, display_size_x / 2))
+                               (display_size_x / 2.3, display_size_y / 10, display_size_x / 2, display_size_x / 2))
 pygame.draw.rect(game_display, (250, 203, 3),
                  (display_size_x / 2.3, display_size_y / 10, display_size_x / 2, display_size_x / 2), 3)
 
 # field_surf = pygame.Surface((200, 200))
-# sdfksjd = pygame.draw.rect(field_surf, (215, 215, 215), (50, 50, 50, 50))
-# pygame.draw.line(field_surf, 'red', [50, 0], [0, 50], 2)
-#
+# war_surf = pygame.draw.rect(field_surf, (0, 142, 78), (50, 50, 50, 50))
 # game_display.blit(field_surf, (200, 200))
 
+# События поля
+LEFT = 1
+RIGHT = 3
+running = 1
 
+while running:
+    event = pygame.event.poll()
+    if event.type == pygame.QUIT:
+        running = 0
+    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
+        print("Нажата левая кнопка мыши")
+        print(f"По координатам: {pygame.mouse.get_pos()}")
 
+    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
+        print("Нажата правая кнопка мыши")
+        print(f"По координатам: {pygame.mouse.get_pos()}")
 
+    pygame.display.flip()
 
 
 def event_handler():
