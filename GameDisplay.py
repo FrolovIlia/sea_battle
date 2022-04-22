@@ -60,9 +60,16 @@ game_square = pygame.draw.rect(game_display, (215, 215, 215),
 pygame.draw.rect(game_display, (250, 203, 3),
                  (display_size_x / 2.3, display_size_y / 10, display_size_x / 2, display_size_x / 2), 3)
 
-# field_surf = pygame.Surface((200, 200))
+
+# field_surf = pygame.Surface((display_size_x / 2, display_size_x / 2))
 # war_surf = pygame.draw.rect(field_surf, (0, 142, 78), (50, 50, 50, 50))
-# game_display.blit(field_surf, (200, 200))
+# game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))
+
+def click_on_field():
+    if (display_size_x / 2.3) < pygame.mouse.get_pos()[0] < ((display_size_x / 2.3) + (display_size_x / 2)) and (
+            display_size_y / 10) < pygame.mouse.get_pos()[1] < ((display_size_y / 10) + display_size_x / 2):
+        return True
+
 
 # События поля
 LEFT = 1
@@ -73,17 +80,19 @@ while running:
     event = pygame.event.poll()
     if event.type == pygame.QUIT:
         running = 0
-    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
+    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT and click_on_field():
         print("Нажата левая кнопка мыши")
         print(f"По координатам: {pygame.mouse.get_pos()}")
 
-    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
+    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT and click_on_field():
         print("Нажата правая кнопка мыши")
         print(f"По координатам: {pygame.mouse.get_pos()}")
 
     pygame.display.flip()
 
 
+
+# Условия выхода и основной цикл
 def event_handler():
     for event in pygame.event.get():
         if event.type == QUIT:
