@@ -82,14 +82,17 @@ while running:
         running = 0
     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT and click_on_field():
         print("Нажата левая кнопка мыши")
+        field_pos_correction = (int(pygame.mouse.get_pos()[0] - display_size_x / 2.3),
+                                int(pygame.mouse.get_pos()[1] - display_size_y / 10))
         print(f"По координатам: {pygame.mouse.get_pos()}")
+        print(f"Координаты внутри поля: {field_pos_correction}")
 
     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT and click_on_field():
         print("Нажата правая кнопка мыши")
         print(f"По координатам: {pygame.mouse.get_pos()}")
+        print(f"Координаты внутри поля: {field_pos_correction}")
 
     pygame.display.flip()
-
 
 
 # Условия выхода и основной цикл
