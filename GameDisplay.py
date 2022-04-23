@@ -54,27 +54,48 @@ game_display.blit(submarine_shape, (display_size_x / 14, 350))
 destroyer_shape = pygame.transform.scale(pygame.image.load('pictures/Destroyer_Shape.png'), (120, 40))
 game_display.blit(destroyer_shape, (display_size_x / 14, 400))
 
-# Параметры поля
-game_square = pygame.draw.rect(game_display, (215, 215, 215),
-                               (display_size_x / 2.3, display_size_y / 10, display_size_x / 2, display_size_x / 2))
-pygame.draw.rect(game_display, (250, 203, 3),
-                 (display_size_x / 2.3, display_size_y / 10, display_size_x / 2, display_size_x / 2), 3)
+# Параметры поля.
+# Создаём новый дисплей, для игрового поля.
+
+field_surf = pygame.Surface((display_size_x / 2, display_size_x / 2))
+field_surf.fill("gray")
+
+pygame.draw.rect(field_surf, (250, 203, 3),
+                 (0, 0, display_size_x / 2, display_size_x / 2), 3)
+
+# Разбиваем поле линиями
+lines = 10
+def draw_lines():
+    for line in range(1, lines):
+        pygame.draw.line(field_surf, (0, 0, 0), ((field_surf.get_width()/lines)*line, 0),
+                         ((field_surf.get_width()/lines)*line, field_surf.get_width()), 2)
+
+        pygame.draw.line(field_surf, (0, 0, 0), ((field_surf.get_height() / lines) * line, 0),
+                         ((field_surf.get_height() / lines) * line, field_surf.get_height()), 2)
+
+draw_lines()
 
 
-# field_surf = pygame.Surface((display_size_x / 2, display_size_x / 2))
 # war_surf = pygame.draw.rect(field_surf, (0, 142, 78), (50, 50, 50, 50))
-# game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))
+game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))
 
-def click_on_field():
-    if (display_size_x / 2.3) < pygame.mouse.get_pos()[0] < ((display_size_x / 2.3) + (display_size_x / 2)) and (
-            display_size_y / 10) < pygame.mouse.get_pos()[1] < ((display_size_y / 10) + display_size_x / 2):
-        return True
+
+
+#
+#
 
 
 # События поля
 LEFT = 1
 RIGHT = 3
 running = 1
+
+
+def click_on_field():
+    if (display_size_x / 2.3) < pygame.mouse.get_pos()[0] < ((display_size_x / 2.3) + (display_size_x / 2)) and (
+            display_size_y / 10) < pygame.mouse.get_pos()[1] < ((display_size_y / 10) + display_size_x / 2):
+        return True
+
 
 while running:
     event = pygame.event.poll()
@@ -89,6 +110,8 @@ while running:
 
     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT and click_on_field():
         print("Нажата правая кнопка мыши")
+        field_pos_correction = (int(pygame.mouse.get_pos()[0] - display_size_x / 2.3),
+                                int(pygame.mouse.get_pos()[1] - display_size_y / 10))
         print(f"По координатам: {pygame.mouse.get_pos()}")
         print(f"Координаты внутри поля: {field_pos_correction}")
 
