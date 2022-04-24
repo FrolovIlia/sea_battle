@@ -60,26 +60,25 @@ game_display.blit(destroyer_shape, (display_size_x / 14, 400))
 field_surf = pygame.Surface((display_size_x / 2, display_size_x / 2))
 field_surf.fill("gray")
 
-pygame.draw.rect(field_surf, (250, 203, 3),
-                 (0, 0, display_size_x / 2, display_size_x / 2), 3)
-
 # Разбиваем поле линиями
 lines = 10
+
+
 def draw_lines():
     for line in range(1, lines):
-        pygame.draw.line(field_surf, (0, 0, 0), ((field_surf.get_width()/lines)*line, 0),
-                         ((field_surf.get_width()/lines)*line, field_surf.get_width()), 2)
+        pygame.draw.line(field_surf, (0, 0, 0), ((field_surf.get_width() / lines) * line, 0),
+                         ((field_surf.get_width() / lines) * line, field_surf.get_width()), 2)
 
-        pygame.draw.line(field_surf, (0, 0, 0), ((field_surf.get_height() / lines) * line, 0),
-                         ((field_surf.get_height() / lines) * line, field_surf.get_height()), 2)
+        pygame.draw.line(field_surf, (0, 0, 0), (0, (field_surf.get_height() / lines) * line),
+                         (field_surf.get_height(), (field_surf.get_height() / lines) * line), 2)
+
 
 draw_lines()
 
+field_frame = pygame.draw.rect(field_surf, (250, 203, 3),
+                               (0, 0, display_size_x / 2, display_size_x / 2), 3)
 
-# war_surf = pygame.draw.rect(field_surf, (0, 142, 78), (50, 50, 50, 50))
 game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))
-
-
 
 #
 #
@@ -97,23 +96,23 @@ def click_on_field():
         return True
 
 
+def convert_to_cell(field_pos):  # Принимает координаты внутри игрового поля.
+    cell_size = (field_surf.get_width() / 10, field_surf.get_height() / 10)
+    field_cell = (int(field_pos[0] // cell_size[0]), int(field_pos[1] // cell_size[1]))
+    return field_cell
+
+
 while running:
     event = pygame.event.poll()
     if event.type == pygame.QUIT:
         running = 0
-    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT and click_on_field():
-        print("Нажата левая кнопка мыши")
+    elif event.type == pygame.MOUSEBUTTONDOWN and (event.button == LEFT or event.button == RIGHT) and click_on_field():
+        print("Нажата кнопка мыши")
         field_pos_correction = (int(pygame.mouse.get_pos()[0] - display_size_x / 2.3),
                                 int(pygame.mouse.get_pos()[1] - display_size_y / 10))
         print(f"По координатам: {pygame.mouse.get_pos()}")
         print(f"Координаты внутри поля: {field_pos_correction}")
-
-    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT and click_on_field():
-        print("Нажата правая кнопка мыши")
-        field_pos_correction = (int(pygame.mouse.get_pos()[0] - display_size_x / 2.3),
-                                int(pygame.mouse.get_pos()[1] - display_size_y / 10))
-        print(f"По координатам: {pygame.mouse.get_pos()}")
-        print(f"Координаты внутри поля: {field_pos_correction}")
+        print(f"Координаты ячейки: {convert_to_cell(field_pos_correction)}")
 
     pygame.display.flip()
 
