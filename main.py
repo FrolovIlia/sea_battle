@@ -44,6 +44,7 @@ def note_shoot(user_field: list[list], test_field: list[list], shoot: list):
 
     return user_field
 
+
 if __name__ == '__main__':
     field_condition = start_field()
     show_field(field_condition)

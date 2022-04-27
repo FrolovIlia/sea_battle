@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from Indicator_positions import dict_shot_pos
 
 from GameLogic import dead_ships
 
@@ -16,9 +17,9 @@ pygame.display.set_caption('BattleShip')
 pygame.display.set_icon(pygame.image.load("pictures/ship_icon.png"))
 game_display.fill('white')
 
-# Параметры счётчика
-pygame.draw.rect(game_display, (250, 203, 3),
-                 (display_size_x / 14, display_size_y / 10, display_size_x / 7, display_size_x / 7))
+# Параметры счётчика 1
+counter_1 = pygame.draw.rect(game_display, (250, 203, 3),
+                             (display_size_x / 14, display_size_y / 10, display_size_x / 7, display_size_x / 7))
 
 hit_counter_1 = pygame.font.Font(None, 36)
 
@@ -30,17 +31,9 @@ game_display.blit(player_name, (75, 140))
 
 pygame.draw.line(game_display, 'black', [70, 120], [170, 120], 2)
 
-# Параметры кораблей и вспомогательных элементов
+# Параметры кораблей
 carrier_shape = pygame.transform.scale(pygame.image.load('pictures/Carrier_shape.png'), (120, 40))
 game_display.blit(carrier_shape, (display_size_x / 14, 200))
-
-# empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Hit small.png'),
-#                                     (small_xy_hit_size, small_xy_hit_size))
-# game_display.blit(empty_cell, (180, display_size_y / 3))
-#
-# padded_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'),
-#                                      (small_xy_hit_size, small_xy_hit_size))
-# game_display.blit(padded_cell, (200, display_size_y / 3))
 
 battleship_shape = pygame.transform.scale(pygame.image.load('pictures/Battleship_Shape.png'), (120, 40))
 game_display.blit(battleship_shape, (display_size_x / 14, 250))
@@ -54,23 +47,40 @@ game_display.blit(submarine_shape, (display_size_x / 14, 350))
 destroyer_shape = pygame.transform.scale(pygame.image.load('pictures/Destroyer_Shape.png'), (120, 40))
 game_display.blit(destroyer_shape, (display_size_x / 14, 400))
 
-# Параметры поля.
-# Создаём новый дисплей, для игрового поля.
+# Индикаторы подбития
 
-field_surf = pygame.Surface((display_size_x / 2, display_size_x / 2))
+empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'),
+                                    (small_xy_hit_size, small_xy_hit_size))
+game_display.blit(empty_cell, (190, 220))
+
+empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'),
+                                    (small_xy_hit_size, small_xy_hit_size))
+game_display.blit(empty_cell, (190, 420))
+
+
+
+
+
+# padded_cell = pygame.transform.scale(pygame.image.load('pictures/m_Hit small.png'),
+#                                      (small_xy_hit_size, small_xy_hit_size))
+# game_display.blit(padded_cell, (200, display_size_y / 3))
+
+
+# Параметры поля
+field_surf = pygame.Surface((display_size_x / 2, display_size_x / 2))  # Создаём новый дисплей, для игрового поля.
 field_surf.fill("gray")
 
 # Разбиваем поле линиями
-lines = 10
+LINES = 10
 
 
 def draw_lines():
-    for line in range(1, lines):
-        pygame.draw.line(field_surf, (0, 0, 0), ((field_surf.get_width() / lines) * line, 0),
-                         ((field_surf.get_width() / lines) * line, field_surf.get_width()), 2)
+    for line in range(1, LINES):
+        pygame.draw.line(field_surf, (0, 0, 0), ((field_surf.get_width() / LINES) * line, 0),
+                         ((field_surf.get_width() / LINES) * line, field_surf.get_width()), 2)
 
-        pygame.draw.line(field_surf, (0, 0, 0), (0, (field_surf.get_height() / lines) * line),
-                         (field_surf.get_height(), (field_surf.get_height() / lines) * line), 2)
+        pygame.draw.line(field_surf, (0, 0, 0), (0, (field_surf.get_height() / LINES) * line),
+                         (field_surf.get_height(), (field_surf.get_height() / LINES) * line), 2)
 
 
 draw_lines()
@@ -78,10 +88,7 @@ draw_lines()
 field_frame = pygame.draw.rect(field_surf, (250, 203, 3),
                                (0, 0, display_size_x / 2, display_size_x / 2), 3)
 
-game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))
-
-#
-#
+game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))  # Добавляем оранжевую рамку
 
 
 # События поля
