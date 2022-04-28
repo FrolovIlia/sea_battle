@@ -65,6 +65,5 @@ if __name__ == '__main__':
         field_condition = note_shoot(field_condition, field_with_ships, shot)
         show_field(field_condition)
 
-
     else:
         print("Game Over")

@@ -1,8 +1,9 @@
 import pygame
 from pygame.locals import *
-from Indicator_positions import dict_shot_pos
 
+import main
 from GameLogic import dead_ships
+from Indicator_positions import dict_shot_pos
 
 display_size_x = 840
 display_size_y = 600
@@ -17,17 +18,19 @@ pygame.display.set_caption('BattleShip')
 pygame.display.set_icon(pygame.image.load("pictures/ship_icon.png"))
 game_display.fill('white')
 
+
 # Параметры счётчика 1
 counter_1 = pygame.draw.rect(game_display, (250, 203, 3),
                              (display_size_x / 14, display_size_y / 10, display_size_x / 7, display_size_x / 7))
 
-hit_counter_1 = pygame.font.Font(None, 36)
+counter_style = pygame.font.Font(None, 50)
+player_style = pygame.font.Font(None, 25)
 
-sign_counter = hit_counter_1.render(f'{dead_ships}', True, (180, 0, 0))
-game_display.blit(sign_counter, (115, 80)
-                  )
-player_name = hit_counter_1.render('Player 1', True, (180, 0, 0))
-game_display.blit(player_name, (75, 140))
+sign_counter = counter_style.render(f'{dead_ships}', True, (0, 0, 0))
+game_display.blit(sign_counter, (115, 80))
+
+player_name = player_style.render('Player 1', True, (0, 0, 0))
+game_display.blit(player_name, (85, 140))
 
 pygame.draw.line(game_display, 'black', [70, 120], [170, 120], 2)
 
@@ -47,18 +50,22 @@ game_display.blit(submarine_shape, (display_size_x / 14, 350))
 destroyer_shape = pygame.transform.scale(pygame.image.load('pictures/Destroyer_Shape.png'), (120, 40))
 game_display.blit(destroyer_shape, (display_size_x / 14, 400))
 
+
 # Индикаторы подбития
 
-empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'),
-                                    (small_xy_hit_size, small_xy_hit_size))
-game_display.blit(empty_cell, (190, 220))
-
-empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'),
-                                    (small_xy_hit_size, small_xy_hit_size))
-game_display.blit(empty_cell, (190, 420))
-
+def draw_indicators():
+    for value in dict_shot_pos.values():
+        for pos in value:
+            empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'),
+                                                (small_xy_hit_size, small_xy_hit_size))
+            game_display.blit(empty_cell, pos)
 
 
+draw_indicators()
+
+
+def change_indicators():
+    pass
 
 
 # padded_cell = pygame.transform.scale(pygame.image.load('pictures/m_Hit small.png'),
@@ -86,10 +93,9 @@ def draw_lines():
 draw_lines()
 
 field_frame = pygame.draw.rect(field_surf, (250, 203, 3),
-                               (0, 0, display_size_x / 2, display_size_x / 2), 3)
+                               (0, 0, display_size_x / 2, display_size_x / 2), 3)  # Добавляем оранжевую рамку
 
-game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))  # Добавляем оранжевую рамку
-
+game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))
 
 # События поля
 LEFT = 1
@@ -114,11 +120,11 @@ while running:
     if event.type == pygame.QUIT:
         running = 0
     elif event.type == pygame.MOUSEBUTTONDOWN and (event.button == LEFT or event.button == RIGHT) and click_on_field():
-        print("Нажата кнопка мыши")
+        # print("Нажата кнопка мыши")
         field_pos_correction = (int(pygame.mouse.get_pos()[0] - display_size_x / 2.3),
                                 int(pygame.mouse.get_pos()[1] - display_size_y / 10))
-        print(f"По координатам: {pygame.mouse.get_pos()}")
-        print(f"Координаты внутри поля: {field_pos_correction}")
+        # print(f"По координатам: {pygame.mouse.get_pos()}")
+        # print(f"Координаты внутри поля: {field_pos_correction}")
         print(f"Координаты ячейки: {convert_to_cell(field_pos_correction)}")
 
     pygame.display.flip()
