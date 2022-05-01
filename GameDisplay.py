@@ -1,9 +1,8 @@
 import pygame
 from pygame.locals import *
 
-import main
-from GameLogic import dead_ships
-from Indicator_positions import dict_shot_pos
+import GameLogic
+from Display_dict_positions import dict_indicator_pos
 
 display_size_x = 840
 display_size_y = 600
@@ -18,21 +17,43 @@ pygame.display.set_caption('BattleShip')
 pygame.display.set_icon(pygame.image.load("pictures/ship_icon.png"))
 game_display.fill('white')
 
-
 # Параметры счётчика 1
-counter_1 = pygame.draw.rect(game_display, (250, 203, 3),
-                             (display_size_x / 14, display_size_y / 10, display_size_x / 7, display_size_x / 7))
+counter_1_surf = pygame.Surface((display_size_x / 7, display_size_x / 7))
+counter_1_surf.fill("#facb03")
 
 counter_style = pygame.font.Font(None, 50)
 player_style = pygame.font.Font(None, 25)
 
-sign_counter = counter_style.render(f'{dead_ships}', True, (0, 0, 0))
-game_display.blit(sign_counter, (115, 80))
-
 player_name = player_style.render('Player 1', True, (0, 0, 0))
-game_display.blit(player_name, (85, 140))
+counter_1_surf.blit(player_name, (30, 90))
 
-pygame.draw.line(game_display, 'black', [70, 120], [170, 120], 2)
+pygame.draw.line(counter_1_surf, 'black', [10, 75], [110, 75], 2)
+
+
+def update_counter_1(value=0):
+    sign_counter_1 = counter_style.render(f'{value}', True, (0, 0, 0))
+    counter_1_surf.blit(sign_counter_1, (50, 25))
+
+
+update_counter_1()
+
+game_display.blit(counter_1_surf, (display_size_x / 14, display_size_y / 10))
+
+# Параметры счётчика 2
+counter_2_surf = pygame.Surface((display_size_x / 7, display_size_x / 7))
+counter_2_surf.fill("#62a79e")
+
+player_name = player_style.render('Player 2', True, (0, 0, 0))
+counter_2_surf.blit(player_name, (30, 90))
+
+pygame.draw.line(counter_2_surf, 'black', [10, 75], [110, 75], 2)
+
+
+sign_counter_2 = counter_style.render(f'0', True, (0, 0, 0))
+counter_2_surf.blit(sign_counter_2, (50, 25))
+
+
+game_display.blit(counter_2_surf, (display_size_x / 4.5, display_size_y / 10))
 
 # Параметры кораблей
 carrier_shape = pygame.transform.scale(pygame.image.load('pictures/Carrier_shape.png'), (120, 40))
@@ -54,7 +75,7 @@ game_display.blit(destroyer_shape, (display_size_x / 14, 400))
 # Индикаторы подбития
 
 def draw_indicators():
-    for value in dict_shot_pos.values():
+    for value in dict_indicator_pos.values():
         for pos in value:
             empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'),
                                                 (small_xy_hit_size, small_xy_hit_size))
@@ -121,11 +142,17 @@ while running:
         running = 0
     elif event.type == pygame.MOUSEBUTTONDOWN and (event.button == LEFT or event.button == RIGHT) and click_on_field():
         # print("Нажата кнопка мыши")
+
         field_pos_correction = (int(pygame.mouse.get_pos()[0] - display_size_x / 2.3),
                                 int(pygame.mouse.get_pos()[1] - display_size_y / 10))
+
+        shot = convert_to_cell(field_pos_correction)
+
         # print(f"По координатам: {pygame.mouse.get_pos()}")
         # print(f"Координаты внутри поля: {field_pos_correction}")
-        print(f"Координаты ячейки: {convert_to_cell(field_pos_correction)}")
+        print(f"Координаты ячейки: {shot}")
+        GameLogic.shooting(list(shot))
+        update_counter_1(GameLogic.dead_ships)
 
     pygame.display.flip()
 

@@ -25,7 +25,12 @@ def shooting(hit):
             if len(ship['positions']) == 0:
                 print("Корабль полностью подбит")
                 dead_ships += 1
+                print(f'Подбито кораблей: {dead_ships}')
+
         else:
             print(ship['positions'])
             print("Нет попадания")
         print()
+    
+
+
