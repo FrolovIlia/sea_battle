@@ -33,11 +33,10 @@ pygame.draw.line(counter_1_surf, 'black', [10, 75], [110, 75], 2)
 def update_counter_1(value=0):
     sign_counter_1 = counter_style.render(f'{value}', True, (0, 0, 0))
     counter_1_surf.blit(sign_counter_1, (50, 25))
+    game_display.blit(counter_1_surf, (display_size_x / 14, display_size_y / 10))
 
 
-update_counter_1()
-
-game_display.blit(counter_1_surf, (display_size_x / 14, display_size_y / 10))
+update_counter_1(GameLogic.dead_ships)
 
 # Параметры счётчика 2
 counter_2_surf = pygame.Surface((display_size_x / 7, display_size_x / 7))
@@ -48,10 +47,8 @@ counter_2_surf.blit(player_name, (30, 90))
 
 pygame.draw.line(counter_2_surf, 'black', [10, 75], [110, 75], 2)
 
-
 sign_counter_2 = counter_style.render(f'0', True, (0, 0, 0))
 counter_2_surf.blit(sign_counter_2, (50, 25))
-
 
 game_display.blit(counter_2_surf, (display_size_x / 4.5, display_size_y / 10))
 
@@ -142,17 +139,15 @@ while running:
         running = 0
     elif event.type == pygame.MOUSEBUTTONDOWN and (event.button == LEFT or event.button == RIGHT) and click_on_field():
         # print("Нажата кнопка мыши")
-
         field_pos_correction = (int(pygame.mouse.get_pos()[0] - display_size_x / 2.3),
                                 int(pygame.mouse.get_pos()[1] - display_size_y / 10))
 
         shot = convert_to_cell(field_pos_correction)
-
+        update_counter_1(GameLogic.dead_ships)
         # print(f"По координатам: {pygame.mouse.get_pos()}")
         # print(f"Координаты внутри поля: {field_pos_correction}")
         print(f"Координаты ячейки: {shot}")
         GameLogic.shooting(list(shot))
-        update_counter_1(GameLogic.dead_ships)
 
     pygame.display.flip()
 

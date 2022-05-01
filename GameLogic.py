@@ -1,5 +1,4 @@
 import json
-
 dead_ships = 0
 
 with open('data_file.json') as f:
@@ -31,6 +30,3 @@ def shooting(hit):
             print(ship['positions'])
             print("Нет попадания")
         print()
-    
-
-
