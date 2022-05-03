@@ -7,6 +7,7 @@ from Display_dict_positions import dict_indicator_pos
 display_size_x = 840
 display_size_y = 600
 space = 4
+LINES = 10
 
 small_xy_hit_size = display_size_y / 30
 ship_size = (display_size_x / 14, display_size_y / 3)
@@ -17,17 +18,18 @@ pygame.display.set_caption('BattleShip')
 pygame.display.set_icon(pygame.image.load("pictures/ship_icon.png"))
 game_display.fill('white')
 
-# Параметры счётчика 1
-counter_1_surf = pygame.Surface((display_size_x / 7, display_size_x / 7))
-counter_1_surf.fill("#facb03")
-
 counter_style = pygame.font.Font(None, 50)
 player_style = pygame.font.Font(None, 25)
 
-player_name = player_style.render('Player 1', True, (0, 0, 0))
-counter_1_surf.blit(player_name, (30, 90))
 
-pygame.draw.line(counter_1_surf, 'black', [10, 75], [110, 75], 2)
+def update_surf_count_1():
+    counter_1_surf.fill("#facb03")
+    player_text_style = pygame.font.Font(None, 25)
+
+    player_name = player_text_style.render('Player 1', True, (0, 0, 0))
+    counter_1_surf.blit(player_name, (30, 90))
+
+    pygame.draw.line(counter_1_surf, 'black', [10, 75], [110, 75], 2)
 
 
 def update_counter_1(value=0):
@@ -36,21 +38,52 @@ def update_counter_1(value=0):
     game_display.blit(counter_1_surf, (display_size_x / 14, display_size_y / 10))
 
 
+def update_surf_count_2():
+    counter_2_surf.fill("#62a79e")
+
+    player_name = player_style.render('Player 2', True, (0, 0, 0))
+    counter_2_surf.blit(player_name, (30, 90))
+
+    pygame.draw.line(counter_2_surf, 'black', [10, 75], [110, 75], 2)
+
+    sign_counter_2 = counter_style.render(f'0', True, (0, 0, 0))
+    counter_2_surf.blit(sign_counter_2, (50, 25))
+
+    game_display.blit(counter_2_surf, (display_size_x / 4.5, display_size_y / 10))
+
+
+def update_counter_2():
+    pass
+
+
+def draw_indicators():
+    for value in dict_indicator_pos.values():
+        for pos in value:
+            empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'),
+                                                (small_xy_hit_size, small_xy_hit_size))
+            game_display.blit(empty_cell, pos)
+
+
+def draw_lines():
+    for line in range(1, LINES):
+        pygame.draw.line(field_surf, (0, 0, 0), ((field_surf.get_width() / LINES) * line, 0),
+                         ((field_surf.get_width() / LINES) * line, field_surf.get_width()), 2)
+
+        pygame.draw.line(field_surf, (0, 0, 0), (0, (field_surf.get_height() / LINES) * line),
+                         (field_surf.get_height(), (field_surf.get_height() / LINES) * line), 2)
+
+
+# Cчётчик 1
+counter_1_surf = pygame.Surface((display_size_x / 7, display_size_x / 7))
+
+update_surf_count_1()
 update_counter_1(GameLogic.dead_ships)
 
-# Параметры счётчика 2
+# Cчётчик 2
 counter_2_surf = pygame.Surface((display_size_x / 7, display_size_x / 7))
-counter_2_surf.fill("#62a79e")
 
-player_name = player_style.render('Player 2', True, (0, 0, 0))
-counter_2_surf.blit(player_name, (30, 90))
+update_surf_count_2()
 
-pygame.draw.line(counter_2_surf, 'black', [10, 75], [110, 75], 2)
-
-sign_counter_2 = counter_style.render(f'0', True, (0, 0, 0))
-counter_2_surf.blit(sign_counter_2, (50, 25))
-
-game_display.blit(counter_2_surf, (display_size_x / 4.5, display_size_y / 10))
 
 # Параметры кораблей
 carrier_shape = pygame.transform.scale(pygame.image.load('pictures/Carrier_shape.png'), (120, 40))
@@ -71,14 +104,6 @@ game_display.blit(destroyer_shape, (display_size_x / 14, 400))
 
 # Индикаторы подбития
 
-def draw_indicators():
-    for value in dict_indicator_pos.values():
-        for pos in value:
-            empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'),
-                                                (small_xy_hit_size, small_xy_hit_size))
-            game_display.blit(empty_cell, pos)
-
-
 draw_indicators()
 
 
@@ -95,20 +120,7 @@ def change_indicators():
 field_surf = pygame.Surface((display_size_x / 2, display_size_x / 2))  # Создаём новый дисплей, для игрового поля.
 field_surf.fill("gray")
 
-# Разбиваем поле линиями
-LINES = 10
-
-
-def draw_lines():
-    for line in range(1, LINES):
-        pygame.draw.line(field_surf, (0, 0, 0), ((field_surf.get_width() / LINES) * line, 0),
-                         ((field_surf.get_width() / LINES) * line, field_surf.get_width()), 2)
-
-        pygame.draw.line(field_surf, (0, 0, 0), (0, (field_surf.get_height() / LINES) * line),
-                         (field_surf.get_height(), (field_surf.get_height() / LINES) * line), 2)
-
-
-draw_lines()
+draw_lines()  # Разбиваем поле линиями
 
 field_frame = pygame.draw.rect(field_surf, (250, 203, 3),
                                (0, 0, display_size_x / 2, display_size_x / 2), 3)  # Добавляем оранжевую рамку
@@ -143,19 +155,25 @@ while running:
                                 int(pygame.mouse.get_pos()[1] - display_size_y / 10))
 
         shot = convert_to_cell(field_pos_correction)
-        update_counter_1(GameLogic.dead_ships)
+
         # print(f"По координатам: {pygame.mouse.get_pos()}")
         # print(f"Координаты внутри поля: {field_pos_correction}")
         print(f"Координаты ячейки: {shot}")
+
         GameLogic.shooting(list(shot))
+        update_counter_1(GameLogic.dead_ships)
+        # update_counter_2()
+
+    update_surf_count_1()
+    # update_surf_count_2()
 
     pygame.display.flip()
 
 
 # Условия выхода и основной цикл
 def event_handler():
-    for event in pygame.event.get():
-        if event.type == QUIT:
+    for game_event in pygame.event.get():
+        if game_event.type == QUIT:
             pygame.quit()
             quit()
 
