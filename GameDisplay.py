@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 
+import main
 import GameLogic
 from Display_dict_positions import dict_indicator_pos
 
@@ -73,6 +74,34 @@ def draw_lines():
                          (field_surf.get_height(), (field_surf.get_height() / LINES) * line), 2)
 
 
+def click_on_field():
+    if (display_size_x / 2.3) < pygame.mouse.get_pos()[0] < ((display_size_x / 2.3) + (display_size_x / 2)) and (
+            display_size_y / 10) < pygame.mouse.get_pos()[1] < ((display_size_y / 10) + display_size_x / 2):
+        return True
+
+
+def convert_to_cell(field_pos):  # Принимает координаты внутри игрового поля.
+    cell_size = (field_surf.get_width() / 10, field_surf.get_height() / 10)
+    field_cell = (int(field_pos[0] // cell_size[0]), int(field_pos[1] // cell_size[1]))
+    return field_cell
+
+
+def change_indicators():
+    pass
+
+
+def draw_hits_on_field():
+    for place in main.field_condition:
+        if place == "*":
+            red_x = pygame.transform.scale(pygame.image.load('pictures/red x.png'),
+                                           (big_xy_hit_size, big_xy_hit_size))
+            field_surf.blit(red_x, (place[0], place[1]))
+        if place == "x":
+            black_x = pygame.transform.scale(pygame.image.load('pictures/black x.png'),
+                                             (big_xy_hit_size, big_xy_hit_size))
+            field_surf.blit(black_x, (place[0], place[1]))
+
+
 # Cчётчик 1
 counter_1_surf = pygame.Surface((display_size_x / 7, display_size_x / 7))
 
@@ -83,7 +112,6 @@ update_counter_1(GameLogic.dead_ships)
 counter_2_surf = pygame.Surface((display_size_x / 7, display_size_x / 7))
 
 update_surf_count_2()
-
 
 # Параметры кораблей
 carrier_shape = pygame.transform.scale(pygame.image.load('pictures/Carrier_shape.png'), (120, 40))
@@ -101,15 +129,11 @@ game_display.blit(submarine_shape, (display_size_x / 14, 350))
 destroyer_shape = pygame.transform.scale(pygame.image.load('pictures/Destroyer_Shape.png'), (120, 40))
 game_display.blit(destroyer_shape, (display_size_x / 14, 400))
 
-
 # Индикаторы подбития
 
 draw_indicators()
 
-
-def change_indicators():
-    pass
-
+change_indicators()
 
 # padded_cell = pygame.transform.scale(pygame.image.load('pictures/m_Hit small.png'),
 #                                      (small_xy_hit_size, small_xy_hit_size))
@@ -120,30 +144,24 @@ def change_indicators():
 field_surf = pygame.Surface((display_size_x / 2, display_size_x / 2))  # Создаём новый дисплей, для игрового поля.
 field_surf.fill("gray")
 
+big_xy_hit_size = field_surf.get_width() / 10
+
 draw_lines()  # Разбиваем поле линиями
 
 field_frame = pygame.draw.rect(field_surf, (250, 203, 3),
                                (0, 0, display_size_x / 2, display_size_x / 2), 3)  # Добавляем оранжевую рамку
 
-game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))
+# Указываем выстрелы на поле
+
+# draw_hits_on_field()  # TODO Нужно получать значение field_condition из main
+
+
+game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))  # Отрисовываем игровое поле
 
 # События поля
 LEFT = 1
 RIGHT = 3
 running = 1
-
-
-def click_on_field():
-    if (display_size_x / 2.3) < pygame.mouse.get_pos()[0] < ((display_size_x / 2.3) + (display_size_x / 2)) and (
-            display_size_y / 10) < pygame.mouse.get_pos()[1] < ((display_size_y / 10) + display_size_x / 2):
-        return True
-
-
-def convert_to_cell(field_pos):  # Принимает координаты внутри игрового поля.
-    cell_size = (field_surf.get_width() / 10, field_surf.get_height() / 10)
-    field_cell = (int(field_pos[0] // cell_size[0]), int(field_pos[1] // cell_size[1]))
-    return field_cell
-
 
 while running:
     event = pygame.event.poll()
