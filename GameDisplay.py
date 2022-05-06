@@ -1,14 +1,14 @@
 import pygame
 from pygame.locals import *
 
-import main
-import GameLogic
 from Display_dict_positions import dict_indicator_pos
+from main import *
 
 display_size_x = 840
 display_size_y = 600
 space = 4
 LINES = 10
+
 
 small_xy_hit_size = display_size_y / 30
 ship_size = (display_size_x / 14, display_size_y / 3)
@@ -91,7 +91,7 @@ def change_indicators():
 
 
 def draw_hits_on_field():
-    for place in main.field_condition:
+    for place in field_condition:
         if place == "*":
             red_x = pygame.transform.scale(pygame.image.load('pictures/red x.png'),
                                            (big_xy_hit_size, big_xy_hit_size))
