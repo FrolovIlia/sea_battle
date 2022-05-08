@@ -8,24 +8,6 @@ def start_field():
     return clean_field
 
 
-def show_field(field: list):
-    for i in range(len(field)):
-        for j in range(len(field[i])):
-            print(field[i][j], end=' ')
-        print()
-
-
-def add_ships(base_field: list):
-    all_pos = []
-    for ship in GameLogic.ships_dict['layout']:
-        all_pos.extend(ship['positions'])
-
-    new_field = [line.copy() for line in base_field]
-    for x, y in all_pos:
-        new_field[x][y] = 's'
-    return new_field
-
-
 def check_shoot(shoot: str) -> list[int]:
     if len(shoot) == 2 and shoot.isnumeric():
         print('Данные верны')
@@ -35,35 +17,73 @@ def check_shoot(shoot: str) -> list[int]:
         return check_shoot(trying)
 
 
-def note_shoot(user_field: list[list], test_field: list[list], shoot: list):
-    x, y = shoot
-    if test_field[x][y] == 's':
-        user_field[x][y] = '*'
-    else:
-        user_field[x][y] = 'x'
+def get_field_condition():
+    global field_condition
+    return field_condition
 
-    return user_field
+
+class GameFieldCondition:
+    sample = None
+
+    def __init__(self):
+        self.base_field = None
+        self.field_with_ships = None
+        if GameFieldCondition.sample:
+            self = GameFieldCondition.sample
+        else:
+            self.start_field()
+            self.add_ships()
+            GameFieldCondition.sample = self
+
+    def start_field(self):
+        field_size = 10
+        self.base_field = [['~'] * field_size for _ in range(field_size)]
+
+    def add_ships(self):
+        all_pos = []
+        for ship in GameLogic.ships_dict['layout']:
+            all_pos.extend(ship['positions'])
+
+        self.field_with_ships = [line.copy() for line in self.base_field]
+        for x, y in all_pos:
+            self.field_with_ships[x][y] = 's'
+
+    def note_shoot(self, shoot: list):
+        x, y = shoot
+        # if isinstance(self.field_with_ships[x][y], Ship):
+        if self.field_with_ships[x][y] == 's':
+            self.base_field[x][y] = '*'
+        else:
+            self.base_field[x][y] = 'x'
+
+    def show_field(self, with_ships=False):
+        if with_ships:
+            field = self.field_with_ships
+        else:
+            field = self.base_field
+        for y in range(len(field)):
+            for x in range(len(field[y])):
+                print(field[y][x], end=' ')
+            print()
 
 
 if __name__ == '__main__':
-    field_condition = start_field()
-    show_field(field_condition)
+
+    field_condition = GameFieldCondition()
 
     print('Добро пожаловать в игру "Морской Бой!"')
     print('Выберите координаты от 0 до 9 по X и Y')
     print()
-
-    field_with_ships = add_ships(field_condition)
-    show_field(field_with_ships)
 
     while stop_game() is False:
         shot = input('Введите координаты в формате XY: ')
         shot = check_shoot(shot)
 
         GameLogic.shooting(shot)
-        # перерисовка поля по новым данным словаря позиций кораблей.
-        field_condition = note_shoot(field_condition, field_with_ships, shot)
-        show_field(field_condition)
+
+        field_condition.note_shoot(shot)
+        field_condition.show_field()
+
 
     else:
         print("Game Over")

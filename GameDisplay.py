@@ -9,7 +9,6 @@ display_size_y = 600
 space = 4
 LINES = 10
 
-
 small_xy_hit_size = display_size_y / 30
 ship_size = (display_size_x / 14, display_size_y / 3)
 
@@ -90,16 +89,17 @@ def change_indicators():
     pass
 
 
-def draw_hits_on_field():
-    for place in field_condition:
-        if place == "*":
-            red_x = pygame.transform.scale(pygame.image.load('pictures/red x.png'),
-                                           (big_xy_hit_size, big_xy_hit_size))
-            field_surf.blit(red_x, (place[0], place[1]))
-        if place == "x":
-            black_x = pygame.transform.scale(pygame.image.load('pictures/black x.png'),
-                                             (big_xy_hit_size, big_xy_hit_size))
-            field_surf.blit(black_x, (place[0], place[1]))
+def draw_hits_on_field(field_condition):
+    for x, line in enumerate(field_condition.base_field):
+        for y, place in enumerate(line):
+            if place == "*":
+                red_x = pygame.transform.scale(pygame.image.load('pictures/red x.png'),
+                                               (big_xy_hit_size, big_xy_hit_size))
+                field_surf.blit(red_x, ((field_surf.get_width() / 10) * x, (field_surf.get_height() / 10) * y))
+            if place == "x":
+                black_x = pygame.transform.scale(pygame.image.load('pictures/black x.png'),
+                                                 (big_xy_hit_size, big_xy_hit_size))
+                field_surf.blit(black_x, ((field_surf.get_width() / 10) * x, (field_surf.get_height() / 10) * y))
 
 
 # Cчётчик 1
@@ -153,8 +153,7 @@ field_frame = pygame.draw.rect(field_surf, (250, 203, 3),
 
 # Указываем выстрелы на поле
 
-# draw_hits_on_field()  # TODO Нужно получать значение field_condition из main
-
+field_condition = GameFieldCondition()
 
 game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))  # Отрисовываем игровое поле
 
@@ -179,6 +178,12 @@ while running:
         print(f"Координаты ячейки: {shot}")
 
         GameLogic.shooting(list(shot))
+        update_counter_1(GameLogic.dead_ships)
+        field_condition.note_shoot(shot)
+
+        draw_hits_on_field(field_condition)
+        game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))
+
         update_counter_1(GameLogic.dead_ships)
         # update_counter_2()
 
