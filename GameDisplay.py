@@ -179,7 +179,7 @@ while running:
 
         GameLogic.shooting(list(shot))
         update_counter_1(GameLogic.dead_ships)
-        field_condition.note_shoot(shot)
+        field_condition.note_shoot(list(shot))
 
         draw_hits_on_field(field_condition)
         game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))

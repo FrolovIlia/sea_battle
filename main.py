@@ -1,5 +1,6 @@
 import GameLogic
 from GameLogic import *
+from Ships import Ship
 
 
 def start_field():
@@ -50,7 +51,7 @@ class GameFieldCondition:
 
     def note_shoot(self, shoot: list):
         x, y = shoot
-        # if isinstance(self.field_with_ships[x][y], Ship):
+        # if isinstance(self.field_with_ships[x][y], Ship) == 's':
         if self.field_with_ships[x][y] == 's':
             self.base_field[x][y] = '*'
         else:
@@ -83,7 +84,6 @@ if __name__ == '__main__':
 
         field_condition.note_shoot(shot)
         field_condition.show_field()
-
 
     else:
         print("Game Over")
