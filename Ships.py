@@ -1,17 +1,17 @@
 class Ship:
 
-    def __init__(self, name: str, all_pos: list, padded_pos=None):
-        ship_length = len(all_pos)
+    def __init__(self, positions: list, name: str, padded_pos=None):
+        ship_length = len(positions)
         if padded_pos is None:
             padded_pos = []
             self.ship_length = ship_length
             self.padded_pos = padded_pos
             self.name = name
-            self.all_pos = all_pos
+            self.positions = positions
 
     # попадание в пределы корабля
     def shot_at_ship(self, shot):
-        if shot in self.all_pos:
+        if shot in self.positions:
             return True
         else:
             return False
@@ -27,7 +27,6 @@ class Ship:
     # количество подбитий у корабля
     def counter_hits(self):
         return len(self.padded_pos)
-
 
     # уничтожение корабля
     def ship_dead(self):

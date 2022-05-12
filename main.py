@@ -40,19 +40,28 @@ class GameFieldCondition:
         field_size = 10
         self.base_field = [['~'] * field_size for _ in range(field_size)]
 
-    def add_ships(self):
-        all_pos = []
-        for ship in GameLogic.ships_dict['layout']:
-            all_pos.extend(ship['positions'])
+    # def add_ships(self):
+    #     all_pos = []
+    #     for ship in GameLogic.ships_dict['layout']:
+    #         all_pos.extend(ship['positions'])
+    #
+    #     self.field_with_ships = [line.copy() for line in self.base_field]
+    #     for x, y in all_pos:
+    #         self.field_with_ships[x][y] = 's'
 
+    def add_ships(self):
         self.field_with_ships = [line.copy() for line in self.base_field]
-        for x, y in all_pos:
-            self.field_with_ships[x][y] = 's'
+
+        for ship in ships_dict["layout"]:
+            ship_instance = Ship(ship['positions'], ship['ship'])
+
+            for x, y in ship_instance.positions:
+                self.field_with_ships[x][y] = ship_instance
 
     def note_shoot(self, shoot: list):
         x, y = shoot
-        # if isinstance(self.field_with_ships[x][y], Ship) == 's':
-        if self.field_with_ships[x][y] == 's':
+        if isinstance(self.field_with_ships[x][y], Ship):
+            # if self.field_with_ships[x][y] == 's':
             self.base_field[x][y] = '*'
         else:
             self.base_field[x][y] = 'x'
