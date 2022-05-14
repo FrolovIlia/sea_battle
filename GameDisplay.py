@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 
-from Display_dict_positions import dict_indicator_pos
+from Ships import dict_indicator_pos
 from main import *
 
 display_size_x = 840
@@ -56,12 +56,12 @@ def update_counter_2():
     pass
 
 
-def draw_indicators():
-    for value in dict_indicator_pos.values():
-        for pos in value:
-            empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'),
-                                                (small_xy_hit_size, small_xy_hit_size))
-            game_display.blit(empty_cell, pos)
+# def draw_indicators():
+#     for value in dict_indicator_pos.values():
+#         for pos in value:
+#             empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'),
+#                                                 (small_xy_hit_size, small_xy_hit_size))
+#             game_display.blit(empty_cell, pos)
 
 
 def draw_lines():
@@ -131,9 +131,8 @@ game_display.blit(destroyer_shape, (display_size_x / 14, 400))
 
 # Индикаторы подбития
 
-draw_indicators()
+# draw_indicators()
 
-change_indicators()
 
 # padded_cell = pygame.transform.scale(pygame.image.load('pictures/m_Hit small.png'),
 #                                      (small_xy_hit_size, small_xy_hit_size))
@@ -186,6 +185,9 @@ while running:
 
         update_counter_1(GameLogic.dead_ships)
         # update_counter_2()
+
+        # TODO redraw indicators here.
+
 
     update_surf_count_1()
     # update_surf_count_2()

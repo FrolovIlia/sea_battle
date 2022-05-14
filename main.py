@@ -1,6 +1,6 @@
 import GameLogic
 from GameLogic import *
-from Ships import Ship
+from Ships import *
 
 
 def start_field():
@@ -33,27 +33,19 @@ class GameFieldCondition:
             self = GameFieldCondition.sample
         else:
             self.start_field()
-            self.add_ships()
+            self.add_ships(ships_dict, dict_indicator_pos)
             GameFieldCondition.sample = self
 
     def start_field(self):
         field_size = 10
         self.base_field = [['~'] * field_size for _ in range(field_size)]
 
-    # def add_ships(self):
-    #     all_pos = []
-    #     for ship in GameLogic.ships_dict['layout']:
-    #         all_pos.extend(ship['positions'])
-    #
-    #     self.field_with_ships = [line.copy() for line in self.base_field]
-    #     for x, y in all_pos:
-    #         self.field_with_ships[x][y] = 's'
-
-    def add_ships(self):
+    def add_ships(self, json_ship_dict, dict_indicator_pos):
         self.field_with_ships = [line.copy() for line in self.base_field]
 
-        for ship in ships_dict["layout"]:
-            ship_instance = Ship(ship['positions'], ship['ship'])
+        for ship in json_ship_dict["layout"]:
+            indicator_pos = dict_indicator_pos[ship['ship']]
+            ship_instance = Ship(ship['positions'], ship['ship'], indicator_pos)
 
             for x, y in ship_instance.positions:
                 self.field_with_ships[x][y] = ship_instance
@@ -61,7 +53,6 @@ class GameFieldCondition:
     def note_shoot(self, shoot: list):
         x, y = shoot
         if isinstance(self.field_with_ships[x][y], Ship):
-            # if self.field_with_ships[x][y] == 's':
             self.base_field[x][y] = '*'
         else:
             self.base_field[x][y] = 'x'
@@ -92,6 +83,7 @@ if __name__ == '__main__':
         GameLogic.shooting(shot)
 
         field_condition.note_shoot(shot)
+        # field_condition.show_field(with_ships=True)
         field_condition.show_field()
 
     else:
