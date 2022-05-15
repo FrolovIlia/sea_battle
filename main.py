@@ -40,11 +40,11 @@ class GameFieldCondition:
         field_size = 10
         self.base_field = [['~'] * field_size for _ in range(field_size)]
 
-    def add_ships(self, json_ship_dict, dict_indicator_pos):
+    def add_ships(self, json_ship_dict, indicator_pos_dict):
         self.field_with_ships = [line.copy() for line in self.base_field]
 
         for ship in json_ship_dict["layout"]:
-            indicator_pos = dict_indicator_pos[ship['ship']]
+            indicator_pos = indicator_pos_dict[ship['ship']]
             ship_instance = Ship(ship['positions'], ship['ship'], indicator_pos)
 
             for x, y in ship_instance.positions:
@@ -86,8 +86,6 @@ if __name__ == '__main__':
         field_condition.note_shoot(shot)
         # field_condition.show_field(with_ships=True)
         field_condition.show_field()
-
-
 
     else:
         print("Game Over")

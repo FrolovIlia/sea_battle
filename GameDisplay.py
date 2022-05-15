@@ -1,14 +1,13 @@
 import pygame
 from pygame.locals import *
 
-import main
-from Ships import dict_indicator_pos
 from main import *
 
 display_size_x = 840
 display_size_y = 600
 space = 4
 LINES = 10
+shot_counter = 0
 
 small_xy_hit_size = display_size_y / 30
 ship_size = (display_size_x / 14, display_size_y / 3)
@@ -34,8 +33,8 @@ def update_surf_count_1():
 
 
 def update_counter_1(value=0):
-    sign_counter_1 = counter_style.render(f'{value}', True, (0, 0, 0))
-    counter_1_surf.blit(sign_counter_1, (50, 25))
+    sign_counter_1 = counter_style.render(f'{value:02}', True, (0, 0, 0))
+    counter_1_surf.blit(sign_counter_1, (40, 25))
     game_display.blit(counter_1_surf, (display_size_x / 14, display_size_y / 10))
 
 
@@ -47,8 +46,8 @@ def update_surf_count_2():
 
     pygame.draw.line(counter_2_surf, 'black', [10, 75], [110, 75], 2)
 
-    sign_counter_2 = counter_style.render(f'0', True, (0, 0, 0))
-    counter_2_surf.blit(sign_counter_2, (50, 25))
+    sign_counter_2 = counter_style.render(f'00', True, (0, 0, 0))
+    counter_2_surf.blit(sign_counter_2, (40, 25))
 
     game_display.blit(counter_2_surf, (display_size_x / 4.5, display_size_y / 10))
 
@@ -57,19 +56,23 @@ def update_counter_2():
     pass
 
 
-# def draw_indicators():
-#     for value in dict_indicator_pos.values():
-#         for pos in value:
-#             empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'),
-#                                                 (small_xy_hit_size, small_xy_hit_size))
-#             game_display.blit(empty_cell, pos)
-#
-def draw_indicators(field_condition, shot):
-    current_pos = field_condition.field_with_ships[shot[0]][shot[1]]
+def draw_base_indicators():
+    for value in dict_indicator_pos.values():
+        for pos in value:
+            empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'),
+                                                (small_xy_hit_size, small_xy_hit_size))
+            game_display.blit(empty_cell, pos)
+
+
+draw_base_indicators()
+
+
+def update_indicators(condition_field):
+    current_pos = condition_field.field_with_ships[shot[0]][shot[1]]
     if isinstance(current_pos, Ship):
-        print(f'Подбитий у корабля: {current_pos.counter_hits()}')
-        print(f'Длина корабля: {current_pos.ship_length}')
-        print(f'Позиции индикаторов на дисплее: {current_pos.indicator_pos}')
+        padded_cell = pygame.transform.scale(pygame.image.load('pictures/m_Hit small.png'),
+                                             (small_xy_hit_size, small_xy_hit_size))
+        game_display.blit(padded_cell, current_pos.indicator_pos[current_pos.counter_hits() - 1])
 
 
 def draw_lines():
@@ -93,12 +96,8 @@ def convert_to_cell(field_pos):  # Принимает координаты вн�
     return field_cell
 
 
-def change_indicators():
-    pass
-
-
-def draw_hits_on_field(field_condition):
-    for x, line in enumerate(field_condition.base_field):
+def draw_hits_on_field(condition_field):
+    for x, line in enumerate(condition_field.base_field):
         for y, place in enumerate(line):
             if place == "*":
                 red_x = pygame.transform.scale(pygame.image.load('pictures/red x.png'),
@@ -174,7 +173,8 @@ while running:
                                 int(pygame.mouse.get_pos()[1] - display_size_y / 10))
 
         shot = convert_to_cell(field_pos_correction)
-
+        shot_counter += 1
+        print(f"Всего сделано выстрелов: {shot_counter}")
         # print(f"По координатам: {pygame.mouse.get_pos()}")
         # print(f"Координаты внутри поля: {field_pos_correction}")
         print(f"Координаты ячейки: {shot}")
@@ -186,7 +186,7 @@ while running:
         draw_hits_on_field(field_condition)
         game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))
 
-        draw_indicators(field_condition, shot)  # Индикаторы подбития
+        update_indicators(field_condition)  # Индикаторы подбития
 
         update_counter_1(GameLogic.dead_ships)
         # update_counter_2()
