@@ -54,6 +54,7 @@ class GameFieldCondition:
         x, y = shoot
         if isinstance(self.field_with_ships[x][y], Ship):
             self.base_field[x][y] = '*'
+            self.field_with_ships[x][y].hit_at_ship(shoot)
         else:
             self.base_field[x][y] = 'x'
 
@@ -85,6 +86,8 @@ if __name__ == '__main__':
         field_condition.note_shoot(shot)
         # field_condition.show_field(with_ships=True)
         field_condition.show_field()
+
+
 
     else:
         print("Game Over")

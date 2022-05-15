@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 
+import main
 from Ships import dict_indicator_pos
 from main import *
 
@@ -62,6 +63,13 @@ def update_counter_2():
 #             empty_cell = pygame.transform.scale(pygame.image.load('pictures/m_Miss small.png'),
 #                                                 (small_xy_hit_size, small_xy_hit_size))
 #             game_display.blit(empty_cell, pos)
+#
+def draw_indicators(field_condition, shot):
+    current_pos = field_condition.field_with_ships[shot[0]][shot[1]]
+    if isinstance(current_pos, Ship):
+        print(f'Подбитий у корабля: {current_pos.counter_hits()}')
+        print(f'Длина корабля: {current_pos.ship_length}')
+        print(f'Позиции индикаторов на дисплее: {current_pos.indicator_pos}')
 
 
 def draw_lines():
@@ -129,11 +137,6 @@ game_display.blit(submarine_shape, (display_size_x / 14, 350))
 destroyer_shape = pygame.transform.scale(pygame.image.load('pictures/Destroyer_Shape.png'), (120, 40))
 game_display.blit(destroyer_shape, (display_size_x / 14, 400))
 
-# Индикаторы подбития
-
-# draw_indicators()
-
-
 # padded_cell = pygame.transform.scale(pygame.image.load('pictures/m_Hit small.png'),
 #                                      (small_xy_hit_size, small_xy_hit_size))
 # game_display.blit(padded_cell, (200, display_size_y / 3))
@@ -183,11 +186,10 @@ while running:
         draw_hits_on_field(field_condition)
         game_display.blit(field_surf, (display_size_x / 2.3, display_size_y / 10))
 
+        draw_indicators(field_condition, shot)  # Индикаторы подбития
+
         update_counter_1(GameLogic.dead_ships)
         # update_counter_2()
-
-        # TODO redraw indicators here.
-
 
     update_surf_count_1()
     # update_surf_count_2()

@@ -17,16 +17,10 @@ class Ship:
             self.name = name
             self.positions = positions
 
-    # попадание в пределы корабля
-    def shot_at_ship(self, shot):
-        if shot in self.positions:
-            return True
-        else:
-            return False
 
     # подбитие корабля
     def hit_at_ship(self, shot):
-        if self.shot_at_ship(shot) is True and shot not in self.padded_pos:
+        if shot not in self.padded_pos:
             self.padded_pos.append(shot)
             return True
         else:
