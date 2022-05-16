@@ -109,6 +109,12 @@ def draw_hits_on_field(condition_field):
                 field_surf.blit(black_x, ((field_surf.get_width() / 10) * x, (field_surf.get_height() / 10) * y))
 
 
+def show_victory_message():
+    victory_message = player_style.render(f"All ships hit, you win!"
+                                          f" Number of shots fired: {shot_counter}", True, (0, 0, 0))
+    game_display.blit(victory_message, (200, 500))
+
+
 # Cчётчик 1
 counter_1_surf = pygame.Surface((display_size_x / 7, display_size_x / 7))
 
@@ -135,11 +141,6 @@ game_display.blit(submarine_shape, (display_size_x / 14, 350))
 
 destroyer_shape = pygame.transform.scale(pygame.image.load('pictures/Destroyer_Shape.png'), (120, 40))
 game_display.blit(destroyer_shape, (display_size_x / 14, 400))
-
-# padded_cell = pygame.transform.scale(pygame.image.load('pictures/m_Hit small.png'),
-#                                      (small_xy_hit_size, small_xy_hit_size))
-# game_display.blit(padded_cell, (200, display_size_y / 3))
-
 
 # Параметры поля
 field_surf = pygame.Surface((display_size_x / 2, display_size_x / 2))  # Создаём новый дисплей, для игрового поля.
@@ -190,6 +191,10 @@ while running:
 
         update_counter_1(GameLogic.dead_ships)
         # update_counter_2()
+
+        if GameLogic.dead_ships == len(ships_dict["layout"]):
+            show_victory_message()
+            running = 0
 
     update_surf_count_1()
     # update_surf_count_2()
