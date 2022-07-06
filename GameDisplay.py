@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 from pygame.locals import *
 
@@ -15,7 +17,7 @@ ship_size = (display_size_x / 14, display_size_y / 3)
 pygame.init()
 game_display = pygame.display.set_mode((display_size_x, display_size_y))
 pygame.display.set_caption('BattleShip')
-pygame.display.set_icon(pygame.image.load("pictures/ship_icon.png"))
+# pygame.display.set_icon(pygame.image.load("pictures/ship_icon.png"))
 game_display.fill('white')
 
 counter_style = pygame.font.Font(None, 50)
@@ -207,7 +209,7 @@ def event_handler():
     for game_event in pygame.event.get():
         if game_event.type == QUIT:
             pygame.quit()
-            quit()
+            sys.exit()
 
 
 while True:
